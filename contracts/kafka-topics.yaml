@@ -13,3 +13,18 @@ topics:
     owner: ordering-bc
     key: order_id
     value_schema: contracts/proto/ordering/events.proto#OrderPlaced|OrderConfirmed|OrderCancelled
+
+  - name: pricing.domain-events.v1
+    owner: pricing-bc
+    key: order_id
+    value_schema: contracts/proto/pricing/events.proto#PriceQuoted
+
+  - name: payment.domain-events.v1
+    owner: payment-bc
+    key: order_id
+    value_schema: contracts/proto/payment/events.proto#PaymentCaptured|PaymentRefunded
+
+  - name: fulfillment.domain-events.v1
+    owner: fulfillment-bc
+    key: order_id
+    value_schema: contracts/proto/fulfillment/events.proto#FulfillmentScheduled|FulfillmentCancelled

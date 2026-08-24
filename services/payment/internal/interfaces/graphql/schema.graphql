@@ -1,0 +1,12 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Mutation {
+  capturePayment(orderId: ID!, vendorId: ID!, amount: Int!): Payment!
+  refundPayment(orderId: ID!, reason: String!): Payment!
+}
+
+type Payment @key(fields: "orderId") {
+  orderId: ID!
+  status: String!
+}

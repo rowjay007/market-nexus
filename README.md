@@ -1,13 +1,16 @@
 # MarketNexus
 
-Production-grade Phase 1 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
+Production-grade Phase 1 and Phase 2 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
 
-## Phase 1 Scope
+## Phase 1 and Phase 2 Scope
 
 Implemented bounded contexts:
 - Catalog BC
 - Inventory BC
 - Ordering BC
+- Pricing BC
+- Payment BC
+- Fulfillment BC
 
 Implemented architectural guarantees:
 - DDD-style aggregates and domain events per BC
@@ -15,6 +18,7 @@ Implemented architectural guarantees:
 - ACL-based integration from Ordering to Catalog read model
 - Choreography-style saga step for OrderPlaced -> InventoryReserved
 - Compensation test path for reservation failure
+- Checkout choreography for Pricing -> Payment -> Fulfillment with compensation
 - Strangler facade routing config with progressive feature flag rollout
 - Kafka topic and Protobuf event contract definitions
 
@@ -23,6 +27,9 @@ Implemented architectural guarantees:
 - `services/catalog` - Catalog BC service
 - `services/inventory` - Inventory BC service
 - `services/ordering` - Ordering BC service
+- `services/pricing` - Pricing BC service
+- `services/payment` - Payment BC service
+- `services/fulfillment` - Fulfillment BC service
 - `contracts/proto` - Event schema contracts (Protobuf)
 - `contracts/kafka-topics.yaml` - Kafka topic ownership and schema mapping
 - `infra/migrations` - Per-BC migration files
@@ -47,7 +54,7 @@ go test ./...
 
 ## Current Status
 
-This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1.
+This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 and Phase 2.
 
 What is intentionally left as stubs for next iterations:
 - Full GraphQL resolver/server runtime wiring (schema and gqlgen config included)
@@ -61,3 +68,4 @@ What is intentionally left as stubs for next iterations:
 - `docs/adr/0001-ddd-bounded-context-isolation.md`
 - `docs/adr/0002-strangler-facade-feature-flags.md`
 - `docs/adr/0003-ordering-saga-choreography.md`
+- `docs/adr/0004-phase2-checkout-saga.md`

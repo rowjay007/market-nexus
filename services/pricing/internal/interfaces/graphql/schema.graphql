@@ -1,0 +1,12 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Query {
+  priceQuote(vendorId: ID!, orderId: ID!, subtotal: Int!): PriceQuote!
+}
+
+type PriceQuote @key(fields: "orderId") {
+  orderId: ID!
+  vendorId: ID!
+  total: Int!
+}

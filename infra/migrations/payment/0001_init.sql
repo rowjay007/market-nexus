@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS payment_intents (
+  id TEXT PRIMARY KEY,
+  order_id TEXT NOT NULL UNIQUE,
+  vendor_id TEXT NOT NULL,
+  amount BIGINT NOT NULL DEFAULT 0,
+  status TEXT NOT NULL
+);

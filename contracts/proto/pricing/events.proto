@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package marketnexus.pricing.v1;
+
+message PriceQuoted {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  int64 subtotal = 4;
+  int64 discount = 5;
+  int64 tax = 6;
+  int64 total = 7;
+  string occurred_at = 8;
+}

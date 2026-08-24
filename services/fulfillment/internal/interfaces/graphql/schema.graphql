@@ -1,0 +1,11 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Mutation {
+  scheduleFulfillment(orderId: ID!, vendorId: ID!, address: String!): Shipment!
+}
+
+type Shipment @key(fields: "orderId") {
+  orderId: ID!
+  status: String!
+}

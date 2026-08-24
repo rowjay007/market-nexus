@@ -77,3 +77,74 @@ func (s *OrderingService) PlaceOrder(id string, vendorID sharedkernel.VendorID, 
 	s.bus.Publish(confirmed)
 	return order, nil
 }
+
+type PricingACL interface {
+	Quote(orderID string, vendorID sharedkernel.VendorID, subtotal int64) (int64, error)
+}
+
+type PaymentACL interface {
+	Capture(orderID string, vendorID sharedkernel.VendorID, amount int64) error
+	Refund(orderID string, reason string) error
+}
+
+type FulfillmentACL interface {
+	Schedule(orderID string, vendorID sharedkernel.VendorID, address string) error
+	Cancel(orderID string, reason string) error
+}
+
+func (s *OrderingService) CheckoutOrder(
+	id string,
+	vendorID sharedkernel.VendorID,
+	lines []struct {
+		SKU      string
+		Quantity int
+	},
+	pricingACL PricingACL,
+	paymentACL PaymentACL,
+	fulfillmentACL FulfillmentACL,
+	shippingAddress string,
+) (*orderingdomain.Order, error) {
+	order, err := s.PlaceOrder(id, vendorID, lines)
+	if err != nil {
+		return nil, err
+	}
+
+	var subtotal int64
+	for _, line := range order.Lines() {
+		subtotal += int64(line.Quantity) * line.Price
+	}
+
+	total, err := pricingACL.Quote(id, vendorID, subtotal)
+	if err != nil {
+		cancel := order.Cancel(err.Error())
+		_ = s.repo.Save(order)
+		s.bus.Publish(cancel)
+		for _, reserved := range order.Lines() {
+			_ = s.inventoryACL.Release(id, vendorID, reserved.SKU, reserved.Quantity)
+		}
+		return nil, err
+	}
+
+	if err := paymentACL.Capture(id, vendorID, total); err != nil {
+		cancel := order.Cancel(err.Error())
+		_ = s.repo.Save(order)
+		s.bus.Publish(cancel)
+		for _, reserved := range order.Lines() {
+			_ = s.inventoryACL.Release(id, vendorID, reserved.SKU, reserved.Quantity)
+		}
+		return nil, err
+	}
+
+	if err := fulfillmentACL.Schedule(id, vendorID, shippingAddress); err != nil {
+		_ = paymentACL.Refund(id, err.Error())
+		cancel := order.Cancel(err.Error())
+		_ = s.repo.Save(order)
+		s.bus.Publish(cancel)
+		for _, reserved := range order.Lines() {
+			_ = s.inventoryACL.Release(id, vendorID, reserved.SKU, reserved.Quantity)
+		}
+		return nil, err
+	}
+
+	return order, nil
+}
