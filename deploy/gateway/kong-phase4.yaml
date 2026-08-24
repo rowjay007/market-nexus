@@ -1,0 +1,14 @@
+_format_version: "3.0"
+services:
+  - name: graphql-supergraph
+    url: http://federation-router:4000
+    routes:
+      - name: graphql-route
+        paths:
+          - /graphql
+plugins:
+  - name: rate-limiting
+    config:
+      minute: 600
+      policy: local
+  - name: key-auth

@@ -9,4 +9,5 @@ const (
 	TopicFulfillment = "fulfillment.domain-events.v1"
 	TopicSearch = "search.domain-events.v1"
 	TopicReviewTrust = "reviewtrust.domain-events.v1"
+	TopicAnalytics = "analytics.domain-events.v1"
 )

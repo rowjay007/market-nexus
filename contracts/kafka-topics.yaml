@@ -38,3 +38,8 @@ topics:
     owner: reviewtrust-bc
     key: review_id
     value_schema: contracts/proto/reviewtrust/events.proto#ReviewSubmitted|DisputeOpened
+
+  - name: analytics.domain-events.v1
+    owner: analytics-bc
+    key: user_id
+    value_schema: contracts/proto/analytics/events.proto#UserBehaviorRecorded|RecommendationsComputed

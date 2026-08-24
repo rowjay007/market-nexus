@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package marketnexus.analytics.v1;
+
+message UserBehaviorRecorded {
+  string event_id = 1;
+  string user_id = 2;
+  string product_id = 3;
+  string vendor_id = 4;
+  string behavior = 5;
+  string occurred_at = 6;
+}
+
+message RecommendationsComputed {
+  string event_id = 1;
+  string user_id = 2;
+  repeated string products = 3;
+  string occurred_at = 4;
+}

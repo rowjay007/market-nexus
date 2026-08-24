@@ -1,0 +1,11 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Query {
+  recommendations(userId: ID!, limit: Int = 10): [ID!]!
+}
+
+type RecommendationSet @key(fields: "userId") {
+  userId: ID!
+  products: [ID!]!
+}

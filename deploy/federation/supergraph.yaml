@@ -1,0 +1,38 @@
+federation_version: 2
+subgraphs:
+  catalog:
+    routing_url: http://catalog-service:8080/graphql
+    schema:
+      file: ../../services/catalog/internal/interfaces/graphql/schema.graphql
+  inventory:
+    routing_url: http://inventory-service:8080/graphql
+    schema:
+      file: ../../services/inventory/internal/interfaces/graphql/schema.graphql
+  ordering:
+    routing_url: http://ordering-service:8080/graphql
+    schema:
+      file: ../../services/ordering/internal/interfaces/graphql/schema.graphql
+  pricing:
+    routing_url: http://pricing-service:8080/graphql
+    schema:
+      file: ../../services/pricing/internal/interfaces/graphql/schema.graphql
+  payment:
+    routing_url: http://payment-service:8080/graphql
+    schema:
+      file: ../../services/payment/internal/interfaces/graphql/schema.graphql
+  fulfillment:
+    routing_url: http://fulfillment-service:8080/graphql
+    schema:
+      file: ../../services/fulfillment/internal/interfaces/graphql/schema.graphql
+  search:
+    routing_url: http://search-service:8080/graphql
+    schema:
+      file: ../../services/search/internal/interfaces/graphql/schema.graphql
+  reviewtrust:
+    routing_url: http://reviewtrust-service:8080/graphql
+    schema:
+      file: ../../services/reviewtrust/internal/interfaces/graphql/schema.graphql
+  analytics:
+    routing_url: http://analytics-service:8080/graphql
+    schema:
+      file: ../../services/analytics/internal/interfaces/graphql/schema.graphql
