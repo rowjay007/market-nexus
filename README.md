@@ -1,89 +1,222 @@
 # MarketNexus
 
-Production-grade Phase 1 through Phase 5 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
+MarketNexus is a multi-vendor e-commerce marketplace platform built as a domain-driven, event-driven microservice system in Go.
 
-## Phase 1 to Phase 5 Scope
+The project demonstrates a full migration path from a legacy PHP monolith using Strangler Fig rollout controls, while preserving API compatibility and enforcing bounded-context ownership.
 
-Implemented bounded contexts:
-- Catalog BC
-- Inventory BC
-- Ordering BC
-- Pricing BC
-- Payment BC
-- Fulfillment BC
-- Search BC
-- Review/Trust BC
-- Analytics BC
+## Table of Contents
 
-Phase 5 hardening additions:
-- Legacy API contract compatibility tests
-- Progressive rollout gates and runbooks
-- SLO and error budget policy
-- Observability, security, and CI quality gate artifacts
+1. Project Vision
+2. Architecture Overview
+3. Bounded Contexts
+4. Key Technical Patterns
+5. End-to-End Flows
+6. Repository Structure
+7. Local Validation
+8. Migration and Operations
+9. Security, Reliability, and SLOs
+10. Current Implementation Status
+11. ADR Index
 
-Implemented architectural guarantees:
-- DDD-style aggregates and domain events per BC
-- Strict bounded context data/model ownership
-- ACL-based integration from Ordering to Catalog read model
-- Choreography-style saga step for OrderPlaced -> InventoryReserved
-- Compensation test path for reservation failure
-- Checkout choreography for Pricing -> Payment -> Fulfillment with compensation
-- Search indexing and query ranking scoped by vendor isolation
-- Review/Trust review submission, dispute signals, and vendor rating metrics
-- Analytics behavior ingestion and recommendation precompute cache model
-- Federation supergraph composition and gateway config artifacts
-- Strangler facade routing config with progressive feature flag rollout
-- Kafka topic and Protobuf event contract definitions
+## Project Vision
 
-## Repository Layout
+MarketNexus models a marketplace where:
+- Vendors manage listings and stock
+- Buyers browse, search, order, and pay
+- Fulfillment and trust are managed by dedicated domains
+- Analytics computes recommendation candidates from behavior events
 
-- `services/catalog` - Catalog BC service
-- `services/inventory` - Inventory BC service
-- `services/ordering` - Ordering BC service
-- `services/pricing` - Pricing BC service
-- `services/payment` - Payment BC service
-- `services/fulfillment` - Fulfillment BC service
-- `services/search` - Search BC service
-- `services/reviewtrust` - Review/Trust BC service
-- `services/analytics` - Analytics BC service
-- `tests/contracts` - Legacy contract compatibility tests
-- `deploy/reliability` - rollout gates
-- `deploy/observability` - alerting rules
-- `deploy/security` - security policy baseline
-- `contracts/proto` - Event schema contracts (Protobuf)
-- `contracts/kafka-topics.yaml` - Kafka topic ownership and schema mapping
-- `infra/migrations` - Per-BC migration files
-- `deploy/facade/nginx/nginx.conf` - Strangler facade route proxying
-- `deploy/facade/flags/phase1.yaml` - Feature rollout policy
-- `docs/adr` - Architecture decision records
-- `tests/saga` - Cross-BC saga integration tests
+The system is intentionally split into independent business domains to reduce coupling and enable safe incremental delivery.
 
-## Key Design Notes
+## Architecture Overview
 
-- No database sharing across bounded contexts.
-- No cross-context model imports across public boundaries.
-- Ordering consumes Catalog events via an ACL projection read model.
-- Inventory reservations are isolated by `vendor_id` + `sku`.
-- Compensation behavior is explicitly tested.
+- Language: Go 1.23+
+- Style: DDD + CQRS-inspired separation + event choreography
+- Integration:
+	- Synchronous: GraphQL subgraph boundaries (schema and config scaffolded)
+	- Asynchronous: Domain events mapped to Kafka topics
+- Migration: Nginx facade with progressive feature-flag routing
 
-## Run Tests
+### High-Level Service Map
+
+1. Catalog
+2. Inventory
+3. Ordering
+4. Pricing
+5. Payment
+6. Fulfillment
+7. Search
+8. Review/Trust
+9. Analytics
+
+## Bounded Contexts
+
+### 1. Catalog
+- Owns product and variant domain behavior
+- Publishes listing events
+- Path: `services/catalog`
+
+### 2. Inventory
+- Owns stock reservation and release
+- Path: `services/inventory`
+
+### 3. Ordering
+- Owns order lifecycle and checkout choreography hooks
+- Uses ACL projection to consume catalog knowledge
+- Path: `services/ordering`
+
+### 4. Pricing
+- Owns quoting logic and discount/tax composition
+- Path: `services/pricing`
+
+### 5. Payment
+- Owns capture and refund lifecycle
+- Path: `services/payment`
+
+### 6. Fulfillment
+- Owns shipment scheduling and cancellation
+- Path: `services/fulfillment`
+
+### 7. Search
+- Owns search document indexing and ranking behavior
+- Path: `services/search`
+
+### 8. Review/Trust
+- Owns review, dispute, and trust-signal events
+- Path: `services/reviewtrust`
+
+### 9. Analytics
+- Owns behavior ingestion and recommendation precompute model
+- Path: `services/analytics`
+
+## Key Technical Patterns
+
+### Domain-Driven Design
+- Each context has its own model, application service, and storage contract.
+- Cross-context direct model coupling is avoided.
+
+### Anti-Corruption Layer (ACL)
+- Ordering consumes translated catalog read-model data via ACL projection.
+- Path: `services/ordering/acl/catalogreadmodel`
+
+### Event Choreography and Compensation
+- Order and checkout flows rely on event-driven progression and rollback behavior.
+- Compensation (release/refund/cancel) is tested explicitly in saga tests.
+
+### Vendor Isolation
+- Domain data operations are scoped by `vendor_id`.
+- Prevents cross-vendor data leakage by design.
+
+### Strangler Fig Migration
+- Legacy fallback and progressive cutover routing:
+	- `deploy/facade/nginx/nginx.conf`
+	- `deploy/facade/flags/phase1.yaml`
+
+### Contract-First Eventing
+- Topic ownership map:
+	- `contracts/kafka-topics.yaml`
+- Event schemas:
+	- `contracts/proto/*/events.proto`
+
+## End-to-End Flows
+
+### Order Reservation Saga (Phase 1)
+1. Order created
+2. Inventory reservation attempted
+3. Success: order confirms
+4. Failure: order cancels and reserved stock is released
+
+Test: `tests/saga/order_reservation_saga_test.go`
+
+### Checkout Saga (Phase 2)
+1. Order reserved
+2. Pricing quote computed
+3. Payment captured
+4. Fulfillment scheduled
+5. Failure path includes refund/release compensation
+
+Test: `tests/saga/checkout_phase2_saga_test.go`
+
+### Search and Trust Flow (Phase 3)
+1. Search documents indexed and ranked per vendor
+2. Reviews submitted and trust metrics generated
+
+Test: `tests/saga/phase3_search_review_saga_test.go`
+
+### Recommendations Flow (Phase 4)
+1. Analytics consumes behavior events
+2. Scores recommendations in precompute cache
+3. Serves top products by user
+
+Test: `tests/saga/phase4_analytics_recommendations_test.go`
+
+## Repository Structure
+
+- `services/*` - Bounded contexts
+- `contracts/proto` - Event contracts
+- `contracts/kafka-topics.yaml` - Topic ownership and schema mapping
+- `infra/migrations` - Per-context migration files
+- `deploy/facade` - Strangler routing and rollout policy
+- `deploy/federation` - Supergraph composition artifact
+- `deploy/gateway` - Gateway policy baseline
+- `deploy/reliability` - Rollout gates
+- `deploy/observability` - Alert policies
+- `deploy/security` - Security baseline
+- `tests/saga` - Cross-context flow validation
+- `tests/contracts` - Legacy API compatibility shape tests
+- `docs/adr` - Architectural decisions
+- `docs/runbooks` - Cutover/rollback operations
+- `docs/slo` - Reliability objectives and error budget policy
+
+## Local Validation
+
+Run all tests:
 
 ```bash
 go test ./...
 ```
 
-## Current Status
+Run coverage:
 
-This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 through Phase 5.
+```bash
+go test ./... -coverprofile=coverage.out
+go tool cover -func=coverage.out
+```
 
-What is intentionally left as stubs for next iterations:
-- Full GraphQL resolver/server runtime wiring (schema and gqlgen config included)
-- Real Kafka producer/consumer adapter and outbox pattern
-- Real persistent repositories (MongoDB/PostgreSQL adapters)
-- Kong/API Gateway runtime and complete federation supergraph composition
-- Legacy PHP compatibility contract test harness
+## Migration and Operations
 
-## ADRs
+### Progressive Rollout
+- Controlled via facade flag policy in `deploy/facade/flags/phase1.yaml`.
+- Use gate checks from `deploy/reliability/rollout-gates.yaml`.
+
+### Contract Safety
+- Legacy API response shape checks are in `tests/contracts/legacy_contract_test.go`.
+
+### Runbooks
+- Cutover procedure: `docs/runbooks/cutover.md`
+- Rollback procedure: `docs/runbooks/rollback.md`
+
+## Security, Reliability, and SLOs
+
+- Security baseline: `deploy/security/policies.yaml`
+- Alert definitions: `deploy/observability/alerts-rules.yaml`
+- SLO and error budget policy: `docs/slo/phase5-slo.md`
+- CI quality gates: `.github/workflows/phase5-quality-gates.yml`
+
+## Current Implementation Status
+
+Implemented:
+- Full Phase 1-5 architecture scaffold
+- Domain logic and in-memory infrastructure for all bounded contexts
+- Saga and contract tests
+- Migration hardening and operational controls
+
+Still to productionize further:
+- Real runtime adapters for Kafka/DB/Redis/Elastic/ClickHouse/Stripe/3PL
+- Full GraphQL resolver/runtime composition and production routers
+- Real infra provisioning and managed-cloud environment wiring
+
+## ADR Index
 
 - `docs/adr/0001-ddd-bounded-context-isolation.md`
 - `docs/adr/0002-strangler-facade-feature-flags.md`
