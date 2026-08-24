@@ -1,12 +1,11 @@
 package saga
 
 import (
-	"testing"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/reviewtrust"
 	"github.com/rowjay007/market-nexus/services/search"
+	"testing"
 )
 
 func TestPhase3_SearchVendorIsolationAndRanking(t *testing.T) {

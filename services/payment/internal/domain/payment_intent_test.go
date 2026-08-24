@@ -1,9 +1,8 @@
 package domain
 
 import (
-	"testing"
-
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"testing"
 )
 
 func TestCaptureAndRefund(t *testing.T) {

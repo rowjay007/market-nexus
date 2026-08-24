@@ -2,8 +2,6 @@ package saga
 
 import (
 	"errors"
-	"testing"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/catalog"
@@ -13,6 +11,7 @@ import (
 	"github.com/rowjay007/market-nexus/services/ordering/acl/catalogreadmodel"
 	"github.com/rowjay007/market-nexus/services/payment"
 	"github.com/rowjay007/market-nexus/services/pricing"
+	"testing"
 )
 
 type pricingACLAdapter struct {

@@ -1,9 +1,8 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/services/payment/internal/domain"
+	"sync"
 )
 
 type PaymentRepo struct {

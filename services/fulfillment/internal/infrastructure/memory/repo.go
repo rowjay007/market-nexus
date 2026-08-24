@@ -1,9 +1,8 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/services/fulfillment/internal/domain"
+	"sync"
 )
 
 type ShipmentRepo struct {

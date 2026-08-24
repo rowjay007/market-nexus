@@ -2,7 +2,6 @@ package application
 
 import (
 	"errors"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/inventory/internal/domain"

@@ -1,11 +1,10 @@
 package domain
 
 import (
-	"strings"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"strings"
+	"time"
 )
 
 type DocumentID string
@@ -39,9 +38,9 @@ func (d *SearchDocument) RankScore() int {
 	return len(d.title) + (d.tier * 100)
 }
 
-func (d *SearchDocument) ProductID() string { return d.productID }
+func (d *SearchDocument) ProductID() string               { return d.productID }
 func (d *SearchDocument) VendorID() sharedkernel.VendorID { return d.vendorID }
-func (d *SearchDocument) Title() string { return d.title }
+func (d *SearchDocument) Title() string                   { return d.title }
 
 func (d *SearchDocument) PublishedEvent() SearchIndexed {
 	return SearchIndexed{

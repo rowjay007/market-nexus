@@ -1,10 +1,9 @@
 package domain
 
 import (
+	"github.com/rowjay007/market-nexus/pkg/events"
 	"sort"
 	"time"
-
-	"github.com/rowjay007/market-nexus/pkg/events"
 )
 
 type RecommendationCache struct {

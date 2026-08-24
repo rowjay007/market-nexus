@@ -1,9 +1,8 @@
 package catalogreadmodel
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/services/catalog"
+	"sync"
 )
 
 type ProductSnapshot struct {

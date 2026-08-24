@@ -2,15 +2,14 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var (
 	ErrInvalidProductID = errors.New("invalid product id")
-	ErrCrossVendorSKU  = errors.New("sku vendor mismatch")
+	ErrCrossVendorSKU   = errors.New("sku vendor mismatch")
 )
 
 type ProductID string

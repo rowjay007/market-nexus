@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var ErrInvalidRating = errors.New("invalid rating")
@@ -40,11 +39,11 @@ func (r *Review) SubmittedEvent() ReviewSubmitted {
 }
 
 type Dispute struct {
-	id        string
-	reviewID  string
-	vendorID  sharedkernel.VendorID
-	reason    string
-	isFraud   bool
+	id       string
+	reviewID string
+	vendorID sharedkernel.VendorID
+	reason   string
+	isFraud  bool
 }
 
 func NewDispute(id string, reviewID string, vendorID sharedkernel.VendorID, reason string, isFraud bool) *Dispute {
@@ -62,9 +61,9 @@ func (d *Dispute) OpenedEvent() DisputeOpened {
 	}
 }
 
-func (r *Review) ProductID() string { return r.productID }
+func (r *Review) ProductID() string               { return r.productID }
 func (r *Review) VendorID() sharedkernel.VendorID { return r.vendorID }
-func (r *Review) Rating() int { return r.rating }
+func (r *Review) Rating() int                     { return r.rating }
 
 type ReviewSubmitted struct {
 	events.BaseEvent

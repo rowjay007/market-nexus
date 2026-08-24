@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var ErrInvalidAddress = errors.New("invalid shipping address")

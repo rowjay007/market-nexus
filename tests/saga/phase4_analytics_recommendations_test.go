@@ -1,11 +1,10 @@
 package saga
 
 import (
-	"testing"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/analytics"
+	"testing"
 )
 
 func TestPhase4_RecommendationsPipeline(t *testing.T) {

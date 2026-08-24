@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var ErrInvalidSubtotal = errors.New("invalid subtotal")
@@ -52,10 +51,10 @@ func (r *PriceRule) VendorID() sharedkernel.VendorID {
 
 type PriceQuoted struct {
 	events.BaseEvent
-	OrderID   string
-	VendorID  string
-	Subtotal  int64
-	Discount  int64
-	Tax       int64
-	Total     int64
+	OrderID  string
+	VendorID string
+	Subtotal int64
+	Discount int64
+	Tax      int64
+	Total    int64
 }

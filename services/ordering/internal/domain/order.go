@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var (
@@ -76,9 +75,9 @@ func (o *Order) Cancel(reason string) OrderCancelled {
 	}
 }
 
-func (o *Order) ID() OrderID { return o.id }
+func (o *Order) ID() OrderID                     { return o.id }
 func (o *Order) VendorID() sharedkernel.VendorID { return o.vendorID }
-func (o *Order) Status() OrderStatus { return o.status }
+func (o *Order) Status() OrderStatus             { return o.status }
 func (o *Order) Lines() []OrderLine {
 	out := make([]OrderLine, len(o.lines))
 	copy(out, o.lines)

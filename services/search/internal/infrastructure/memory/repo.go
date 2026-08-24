@@ -1,14 +1,13 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/search/internal/domain"
+	"sync"
 )
 
 type IndexRepo struct {
-	mu      sync.RWMutex
+	mu       sync.RWMutex
 	byVendor map[sharedkernel.VendorID][]*domain.SearchDocument
 }
 

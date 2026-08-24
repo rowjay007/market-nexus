@@ -9,6 +9,7 @@ Security reports are accepted for all repository components, including services,
 Please report vulnerabilities privately to the maintainer through GitHub Security Advisories or private contact channels.
 
 When reporting, include:
+
 - Affected area
 - Reproduction steps
 - Potential impact

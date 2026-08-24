@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var (
@@ -62,11 +61,11 @@ func (s *StockItem) Release(orderID string, qty int) InventoryReleased {
 	}
 }
 
-func (s *StockItem) SKU() string { return s.sku }
+func (s *StockItem) SKU() string                     { return s.sku }
 func (s *StockItem) VendorID() sharedkernel.VendorID { return s.vendorID }
-func (s *StockItem) Available() int { return s.available }
-func (s *StockItem) Reserved() int { return s.reserved }
-func (s *StockItem) Version() int { return s.version }
+func (s *StockItem) Available() int                  { return s.available }
+func (s *StockItem) Reserved() int                   { return s.reserved }
+func (s *StockItem) Version() int                    { return s.version }
 
 type InventoryReserved struct {
 	events.BaseEvent

@@ -2,14 +2,13 @@ package saga
 
 import (
 	"errors"
-	"testing"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/catalog"
 	"github.com/rowjay007/market-nexus/services/inventory"
 	"github.com/rowjay007/market-nexus/services/ordering"
 	"github.com/rowjay007/market-nexus/services/ordering/acl/catalogreadmodel"
+	"testing"
 )
 
 type inventoryACLAdapter struct {

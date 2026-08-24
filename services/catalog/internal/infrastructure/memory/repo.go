@@ -1,15 +1,14 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/catalog/internal/domain"
+	"sync"
 )
 
 type ProductRepo struct {
-	mu      sync.RWMutex
-	byID    map[domain.ProductID]*domain.Product
+	mu       sync.RWMutex
+	byID     map[domain.ProductID]*domain.Product
 	byVendor map[sharedkernel.VendorID][]*domain.Product
 }
 

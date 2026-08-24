@@ -1,10 +1,9 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/analytics/internal/domain"
+	"sync"
 )
 
 type EventRepo struct {

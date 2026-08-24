@@ -45,6 +45,7 @@ Use one of:
 ## Commit Convention
 
 Examples:
+
 - `feat(ordering): add checkout compensation branch`
 - `fix(inventory): correct optimistic lock check`
 - `docs: update architecture handbook`

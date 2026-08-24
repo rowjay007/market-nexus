@@ -1,10 +1,9 @@
 package memory
 
 import (
-	"sync"
-
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/reviewtrust/internal/domain"
+	"sync"
 )
 
 type ReviewRepo struct {

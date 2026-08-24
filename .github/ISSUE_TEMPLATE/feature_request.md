@@ -9,6 +9,7 @@ labels: enhancement
 ## Proposed solution
 
 ## Bounded context impact
+
 - New or updated contexts:
 - Event contract changes:
 - Data model changes:

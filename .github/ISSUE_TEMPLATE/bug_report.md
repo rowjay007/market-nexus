@@ -13,6 +13,7 @@ labels: bug
 ## Actual behavior
 
 ## Scope
+
 - Affected bounded context(s):
 - Affected route(s):
 

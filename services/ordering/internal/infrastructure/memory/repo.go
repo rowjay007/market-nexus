@@ -1,9 +1,8 @@
 package memory
 
 import (
-	"sync"
-
 	orderingdomain "github.com/rowjay007/market-nexus/services/ordering/internal/domain"
+	"sync"
 )
 
 type OrderRepo struct {

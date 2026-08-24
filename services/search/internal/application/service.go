@@ -1,11 +1,10 @@
 package application
 
 import (
-	"sort"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
 	"github.com/rowjay007/market-nexus/services/search/internal/domain"
+	"sort"
 )
 
 type IndexRepository interface {

@@ -2,10 +2,9 @@ package domain
 
 import (
 	"errors"
-	"time"
-
 	"github.com/rowjay007/market-nexus/pkg/events"
 	"github.com/rowjay007/market-nexus/pkg/sharedkernel"
+	"time"
 )
 
 var ErrInvalidBehaviorType = errors.New("invalid behavior type")
@@ -34,10 +33,10 @@ func NewBehaviorEvent(id string, userID string, productID string, vendorID share
 	return &BehaviorEvent{id: id, userID: userID, productID: productID, vendorID: vendorID, behavior: behavior, occurredAt: time.Now().UTC()}, nil
 }
 
-func (e *BehaviorEvent) UserID() string { return e.userID }
-func (e *BehaviorEvent) ProductID() string { return e.productID }
+func (e *BehaviorEvent) UserID() string                  { return e.userID }
+func (e *BehaviorEvent) ProductID() string               { return e.productID }
 func (e *BehaviorEvent) VendorID() sharedkernel.VendorID { return e.vendorID }
-func (e *BehaviorEvent) Behavior() BehaviorType { return e.behavior }
+func (e *BehaviorEvent) Behavior() BehaviorType          { return e.behavior }
 
 func (e *BehaviorEvent) RecordedEvent() UserBehaviorRecorded {
 	return UserBehaviorRecorded{

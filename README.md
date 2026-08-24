@@ -24,6 +24,7 @@ The project demonstrates a full migration path from a legacy PHP monolith using 
 ## Project Vision
 
 MarketNexus models a marketplace where:
+
 - Vendors manage listings and stock
 - Buyers browse, search, order, and pay
 - Fulfillment and trust are managed by dedicated domains
@@ -36,8 +37,8 @@ The system is intentionally split into independent business domains to reduce co
 - Language: Go 1.23+
 - Style: DDD + CQRS-inspired separation + event choreography
 - Integration:
-	- Synchronous: GraphQL subgraph boundaries (schema and config scaffolded)
-	- Asynchronous: Domain events mapped to Kafka topics
+  - Synchronous: GraphQL subgraph boundaries (schema and config scaffolded)
+  - Asynchronous: Domain events mapped to Kafka topics
 - Migration: Nginx facade with progressive feature-flag routing
 
 ### High-Level Service Map
@@ -55,75 +56,91 @@ The system is intentionally split into independent business domains to reduce co
 ## Bounded Contexts
 
 ### 1. Catalog
+
 - Owns product and variant domain behavior
 - Publishes listing events
 - Path: `services/catalog`
 
 ### 2. Inventory
+
 - Owns stock reservation and release
 - Path: `services/inventory`
 
 ### 3. Ordering
+
 - Owns order lifecycle and checkout choreography hooks
 - Uses ACL projection to consume catalog knowledge
 - Path: `services/ordering`
 
 ### 4. Pricing
+
 - Owns quoting logic and discount/tax composition
 - Path: `services/pricing`
 
 ### 5. Payment
+
 - Owns capture and refund lifecycle
 - Path: `services/payment`
 
 ### 6. Fulfillment
+
 - Owns shipment scheduling and cancellation
 - Path: `services/fulfillment`
 
 ### 7. Search
+
 - Owns search document indexing and ranking behavior
 - Path: `services/search`
 
 ### 8. Review/Trust
+
 - Owns review, dispute, and trust-signal events
 - Path: `services/reviewtrust`
 
 ### 9. Analytics
+
 - Owns behavior ingestion and recommendation precompute model
 - Path: `services/analytics`
 
 ## Key Technical Patterns
 
 ### Domain-Driven Design
+
 - Each context has its own model, application service, and storage contract.
 - Cross-context direct model coupling is avoided.
 
 ### Anti-Corruption Layer (ACL)
+
 - Ordering consumes translated catalog read-model data via ACL projection.
 - Path: `services/ordering/acl/catalogreadmodel`
 
 ### Event Choreography and Compensation
+
 - Order and checkout flows rely on event-driven progression and rollback behavior.
 - Compensation (release/refund/cancel) is tested explicitly in saga tests.
 
 ### Vendor Isolation
+
 - Domain data operations are scoped by `vendor_id`.
 - Prevents cross-vendor data leakage by design.
 
 ### Strangler Fig Migration
+
 - Legacy fallback and progressive cutover routing:
-	- `deploy/facade/nginx/nginx.conf`
-	- `deploy/facade/flags/phase1.yaml`
+  - `deploy/facade/nginx/nginx.conf`
+  - `deploy/facade/flags/phase1.yaml`
 
 ### Contract-First Eventing
+
 - Topic ownership map:
-	- `contracts/kafka-topics.yaml`
+  - `contracts/kafka-topics.yaml`
 - Event schemas:
-	- `contracts/proto/*/events.proto`
+  - `contracts/proto/*/events.proto`
 
 ## End-to-End Flows
 
 ### Order Reservation Saga (Phase 1)
+
 1. Order created
 2. Inventory reservation attempted
 3. Success: order confirms
@@ -132,6 +149,7 @@ The system is intentionally split into independent business domains to reduce co
 Test: `tests/saga/order_reservation_saga_test.go`
 
 ### Checkout Saga (Phase 2)
+
 1. Order reserved
 2. Pricing quote computed
 3. Payment captured
@@ -141,12 +159,14 @@ Test: `tests/saga/order_reservation_saga_test.go`
 Test: `tests/saga/checkout_phase2_saga_test.go`
 
 ### Search and Trust Flow (Phase 3)
+
 1. Search documents indexed and ranked per vendor
 2. Reviews submitted and trust metrics generated
 
 Test: `tests/saga/phase3_search_review_saga_test.go`
 
 ### Recommendations Flow (Phase 4)
+
 1. Analytics consumes behavior events
 2. Scores recommendations in precompute cache
 3. Serves top products by user
@@ -203,19 +223,19 @@ go test ./tests/contracts/...
 ### When to Update Which Files
 
 - Business behavior change:
-	- `services/<context>/internal/domain/*`
-	- `services/<context>/internal/application/*`
+  - `services/<context>/internal/domain/*`
+  - `services/<context>/internal/application/*`
 - New event payload:
-	- `contracts/proto/<context>/events.proto`
-	- `contracts/kafka-topics.yaml`
+  - `contracts/proto/<context>/events.proto`
+  - `contracts/kafka-topics.yaml`
 - Storage shape change:
-	- `infra/migrations/<context>/*`
+  - `infra/migrations/<context>/*`
 - Migration rollout policy:
-	- `deploy/facade/flags/phase1.yaml`
-	- `deploy/reliability/rollout-gates.yaml`
+  - `deploy/facade/flags/phase1.yaml`
+  - `deploy/reliability/rollout-gates.yaml`
 - Operational behavior:
-	- `docs/runbooks/*`
-	- `docs/slo/*`
+  - `docs/runbooks/*`
+  - `docs/slo/*`
 
 ## Repository Structure
 
@@ -260,13 +280,16 @@ go test ./tests/contracts/...
 ## Migration and Operations
 
 ### Progressive Rollout
+
 - Controlled via facade flag policy in `deploy/facade/flags/phase1.yaml`.
 - Use gate checks from `deploy/reliability/rollout-gates.yaml`.
 
 ### Contract Safety
+
 - Legacy API response shape checks are in `tests/contracts/legacy_contract_test.go`.
 
 ### Runbooks
+
 - Cutover procedure: `docs/runbooks/cutover.md`
 - Rollback procedure: `docs/runbooks/rollback.md`
 
@@ -305,12 +328,14 @@ Before increasing traffic percentages:
 ## Current Implementation Status
 
 Implemented:
+
 - Full Phase 1-5 architecture scaffold
 - Domain logic and in-memory infrastructure for all bounded contexts
 - Saga and contract tests
 - Migration hardening and operational controls
 
 Still to productionize further:
+
 - Real runtime adapters for Kafka/DB/Redis/Elastic/ClickHouse/Stripe/3PL
 - Full GraphQL resolver/runtime composition and production routers
 - Real infra provisioning and managed-cloud environment wiring
