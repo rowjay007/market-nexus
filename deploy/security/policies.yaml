@@ -1,0 +1,15 @@
+security:
+  transport:
+    require_tls: true
+    min_tls_version: "1.2"
+  api:
+    require_api_keys: true
+    rate_limit_per_minute: 600
+  data:
+    encrypt_at_rest: true
+    pii_fields:
+      - buyer_email
+      - payment_token
+  tenant_isolation:
+    required_field: vendor_id
+    deny_cross_vendor_access: true

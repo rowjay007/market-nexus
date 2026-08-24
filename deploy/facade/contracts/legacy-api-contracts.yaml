@@ -1,0 +1,24 @@
+contracts:
+  - endpoint: /api/catalog/products
+    method: GET
+    required_status: 200
+    required_fields:
+      - id
+      - vendor_id
+      - name
+
+  - endpoint: /api/orders
+    method: POST
+    required_status: 201
+    required_fields:
+      - id
+      - status
+      - lines
+
+  - endpoint: /api/inventory/reserve
+    method: POST
+    required_status: 200
+    required_fields:
+      - order_id
+      - sku
+      - reserved

@@ -1,0 +1,15 @@
+rollout_gates:
+  - phase: 10
+    max_5xx_rate: 0.5
+    max_p95_ms: 250
+    min_success_rate: 99.0
+
+  - phase: 50
+    max_5xx_rate: 0.3
+    max_p95_ms: 220
+    min_success_rate: 99.5
+
+  - phase: 100
+    max_5xx_rate: 0.1
+    max_p95_ms: 200
+    min_success_rate: 99.9

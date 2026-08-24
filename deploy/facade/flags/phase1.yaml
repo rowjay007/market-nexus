@@ -5,3 +5,15 @@ routes:
     rollout: [0, 10, 50, 100]
   - endpoint: /api/orders
     rollout: [0, 10, 50, 100]
+  - endpoint: /api/pricing
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/payment
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/fulfillment
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/search
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/reviewtrust
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/analytics
+    rollout: [0, 10, 50, 100]

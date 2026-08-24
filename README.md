@@ -1,8 +1,8 @@
 # MarketNexus
 
-Production-grade Phase 1 through Phase 4 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
+Production-grade Phase 1 through Phase 5 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
 
-## Phase 1 to Phase 4 Scope
+## Phase 1 to Phase 5 Scope
 
 Implemented bounded contexts:
 - Catalog BC
@@ -14,6 +14,12 @@ Implemented bounded contexts:
 - Search BC
 - Review/Trust BC
 - Analytics BC
+
+Phase 5 hardening additions:
+- Legacy API contract compatibility tests
+- Progressive rollout gates and runbooks
+- SLO and error budget policy
+- Observability, security, and CI quality gate artifacts
 
 Implemented architectural guarantees:
 - DDD-style aggregates and domain events per BC
@@ -40,6 +46,10 @@ Implemented architectural guarantees:
 - `services/search` - Search BC service
 - `services/reviewtrust` - Review/Trust BC service
 - `services/analytics` - Analytics BC service
+- `tests/contracts` - Legacy contract compatibility tests
+- `deploy/reliability` - rollout gates
+- `deploy/observability` - alerting rules
+- `deploy/security` - security policy baseline
 - `contracts/proto` - Event schema contracts (Protobuf)
 - `contracts/kafka-topics.yaml` - Kafka topic ownership and schema mapping
 - `infra/migrations` - Per-BC migration files
@@ -64,7 +74,7 @@ go test ./...
 
 ## Current Status
 
-This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 through Phase 4.
+This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 through Phase 5.
 
 What is intentionally left as stubs for next iterations:
 - Full GraphQL resolver/server runtime wiring (schema and gqlgen config included)
@@ -81,3 +91,4 @@ What is intentionally left as stubs for next iterations:
 - `docs/adr/0004-phase2-checkout-saga.md`
 - `docs/adr/0005-phase3-search-reviewtrust.md`
 - `docs/adr/0006-phase4-analytics-federation.md`
+- `docs/adr/0007-phase5-migration-hardening.md`
