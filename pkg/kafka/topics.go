@@ -7,4 +7,6 @@ const (
 	TopicPricing   = "pricing.domain-events.v1"
 	TopicPayment   = "payment.domain-events.v1"
 	TopicFulfillment = "fulfillment.domain-events.v1"
+	TopicSearch = "search.domain-events.v1"
+	TopicReviewTrust = "reviewtrust.domain-events.v1"
 )

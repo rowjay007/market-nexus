@@ -1,0 +1,26 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Query {
+  vendorRating(vendorId: ID!): Float!
+}
+
+type Mutation {
+  submitReview(input: SubmitReviewInput!): Review!
+}
+
+type Review @key(fields: "id") {
+  id: ID!
+  productId: ID!
+  vendorId: ID!
+  rating: Int!
+}
+
+input SubmitReviewInput {
+  id: ID!
+  productId: ID!
+  vendorId: ID!
+  buyerId: ID!
+  rating: Int!
+  comment: String!
+}

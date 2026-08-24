@@ -28,3 +28,13 @@ topics:
     owner: fulfillment-bc
     key: order_id
     value_schema: contracts/proto/fulfillment/events.proto#FulfillmentScheduled|FulfillmentCancelled
+
+  - name: search.domain-events.v1
+    owner: search-bc
+    key: product_id
+    value_schema: contracts/proto/search/events.proto#SearchIndexed
+
+  - name: reviewtrust.domain-events.v1
+    owner: reviewtrust-bc
+    key: review_id
+    value_schema: contracts/proto/reviewtrust/events.proto#ReviewSubmitted|DisputeOpened

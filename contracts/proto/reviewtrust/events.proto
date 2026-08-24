@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package marketnexus.reviewtrust.v1;
+
+message ReviewSubmitted {
+  string event_id = 1;
+  string review_id = 2;
+  string product_id = 3;
+  string vendor_id = 4;
+  string buyer_id = 5;
+  int32 rating = 6;
+  string occurred_at = 7;
+}
+
+message DisputeOpened {
+  string event_id = 1;
+  string dispute_id = 2;
+  string review_id = 3;
+  string vendor_id = 4;
+  string reason = 5;
+  bool is_fraud = 6;
+  string occurred_at = 7;
+}

@@ -1,8 +1,8 @@
 # MarketNexus
 
-Production-grade Phase 1 and Phase 2 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
+Production-grade Phase 1, Phase 2, and Phase 3 scaffold for a DDD, event-driven, multi-vendor marketplace migration from a PHP monolith using the Strangler Fig pattern.
 
-## Phase 1 and Phase 2 Scope
+## Phase 1 to Phase 3 Scope
 
 Implemented bounded contexts:
 - Catalog BC
@@ -11,6 +11,8 @@ Implemented bounded contexts:
 - Pricing BC
 - Payment BC
 - Fulfillment BC
+- Search BC
+- Review/Trust BC
 
 Implemented architectural guarantees:
 - DDD-style aggregates and domain events per BC
@@ -19,6 +21,8 @@ Implemented architectural guarantees:
 - Choreography-style saga step for OrderPlaced -> InventoryReserved
 - Compensation test path for reservation failure
 - Checkout choreography for Pricing -> Payment -> Fulfillment with compensation
+- Search indexing and query ranking scoped by vendor isolation
+- Review/Trust review submission, dispute signals, and vendor rating metrics
 - Strangler facade routing config with progressive feature flag rollout
 - Kafka topic and Protobuf event contract definitions
 
@@ -30,6 +34,8 @@ Implemented architectural guarantees:
 - `services/pricing` - Pricing BC service
 - `services/payment` - Payment BC service
 - `services/fulfillment` - Fulfillment BC service
+- `services/search` - Search BC service
+- `services/reviewtrust` - Review/Trust BC service
 - `contracts/proto` - Event schema contracts (Protobuf)
 - `contracts/kafka-topics.yaml` - Kafka topic ownership and schema mapping
 - `infra/migrations` - Per-BC migration files
@@ -54,7 +60,7 @@ go test ./...
 
 ## Current Status
 
-This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 and Phase 2.
+This repository currently contains production-grade architecture scaffolding and domain-level implementation for Phase 1 through Phase 3.
 
 What is intentionally left as stubs for next iterations:
 - Full GraphQL resolver/server runtime wiring (schema and gqlgen config included)
@@ -69,3 +75,4 @@ What is intentionally left as stubs for next iterations:
 - `docs/adr/0002-strangler-facade-feature-flags.md`
 - `docs/adr/0003-ordering-saga-choreography.md`
 - `docs/adr/0004-phase2-checkout-saga.md`
+- `docs/adr/0005-phase3-search-reviewtrust.md`

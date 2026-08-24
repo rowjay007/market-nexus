@@ -1,0 +1,12 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])
+
+type Query {
+  searchProducts(vendorId: ID!, query: String!): [ID!]!
+}
+
+type SearchDocument @key(fields: "productId") {
+  productId: ID!
+  vendorId: ID!
+  title: String!
+}

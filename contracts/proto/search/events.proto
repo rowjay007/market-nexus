@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package marketnexus.search.v1;
+
+message SearchIndexed {
+  string event_id = 1;
+  string product_id = 2;
+  string vendor_id = 3;
+  string title = 4;
+  string occurred_at = 5;
+}
