@@ -11,12 +11,15 @@ The project demonstrates a full migration path from a legacy PHP monolith using 
 3. Bounded Contexts
 4. Key Technical Patterns
 5. End-to-End Flows
-6. Repository Structure
-7. Local Validation
-8. Migration and Operations
-9. Security, Reliability, and SLOs
-10. Current Implementation Status
-11. ADR Index
+6. Getting Started
+7. Day-to-Day Development
+8. Repository Structure
+9. Local Validation
+10. Migration and Operations
+11. Security, Reliability, and SLOs
+12. Troubleshooting
+13. Current Implementation Status
+14. ADR Index
 
 ## Project Vision
 
@@ -150,6 +153,70 @@ Test: `tests/saga/phase3_search_review_saga_test.go`
 
 Test: `tests/saga/phase4_analytics_recommendations_test.go`
 
+## Getting Started
+
+### Prerequisites
+
+- Go 1.23+
+- Git
+- A Unix-like shell (macOS/Linux)
+
+### Clone and Validate
+
+```bash
+git clone <your-fork-or-origin-url>
+cd market-nexus
+go test ./...
+```
+
+If tests pass, your local environment is ready.
+
+### What You Can Run Today
+
+This repository is currently a production-grade architecture scaffold with executable domain tests and saga tests. It does not yet run full production infra adapters (Kafka brokers, external DBs, etc.) out of the box.
+
+Use these commands as your default loop:
+
+```bash
+go test ./...
+go test ./tests/saga/...
+go test ./tests/contracts/...
+```
+
+## Day-to-Day Development
+
+### Typical Workflow
+
+1. Pick the bounded context to change.
+2. Update domain + application behavior in that context only.
+3. Update event contract/migration only for the context you changed.
+4. Add or update tests (unit + saga/contract where relevant).
+5. Run test suite.
+6. Commit with a Conventional Commit message.
+
+### Bounded Context Rule of Thumb
+
+- Do not import another context's internal domain types.
+- Use ACL or events at boundaries.
+- Never share storage across bounded contexts.
+
+### When to Update Which Files
+
+- Business behavior change:
+	- `services/<context>/internal/domain/*`
+	- `services/<context>/internal/application/*`
+- New event payload:
+	- `contracts/proto/<context>/events.proto`
+	- `contracts/kafka-topics.yaml`
+- Storage shape change:
+	- `infra/migrations/<context>/*`
+- Migration rollout policy:
+	- `deploy/facade/flags/phase1.yaml`
+	- `deploy/reliability/rollout-gates.yaml`
+- Operational behavior:
+	- `docs/runbooks/*`
+	- `docs/slo/*`
+
 ## Repository Structure
 
 - `services/*` - Bounded contexts
@@ -183,6 +250,13 @@ go test ./... -coverprofile=coverage.out
 go tool cover -func=coverage.out
 ```
 
+Focus suites:
+
+```bash
+go test ./tests/saga/...
+go test ./tests/contracts/...
+```
+
 ## Migration and Operations
 
 ### Progressive Rollout
@@ -202,6 +276,31 @@ go tool cover -func=coverage.out
 - Alert definitions: `deploy/observability/alerts-rules.yaml`
 - SLO and error budget policy: `docs/slo/phase5-slo.md`
 - CI quality gates: `.github/workflows/phase5-quality-gates.yml`
+
+## Troubleshooting
+
+### "expected declaration, found 'package'"
+
+This usually means a file accidentally contains duplicate package declarations. Open the file and ensure it starts with a single `package <name>` line.
+
+### Tests pass but coverage gate fails in CI
+
+Run locally:
+
+```bash
+go test ./... -coverprofile=coverage.out
+go tool cover -func=coverage.out | tail -n 1
+```
+
+Ensure total coverage remains above the quality gate configured in `.github/workflows/phase5-quality-gates.yml`.
+
+### Strangler rollout concerns
+
+Before increasing traffic percentages:
+
+1. Run saga and contract tests
+2. Verify SLOs and alert health
+3. Use the cutover/rollback runbooks in `docs/runbooks`
 
 ## Current Implementation Status
 
