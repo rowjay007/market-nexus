@@ -1,0 +1,2 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])\n\n type Query {\n  stock(vendorId: ID!, sku: ID!): StockItem\n }\n\n type StockItem @key(fields: "sku vendorId") {\n  sku: ID!\n  vendorId: ID!\n  available: Int!\n  reserved: Int!\n }

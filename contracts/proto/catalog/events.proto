@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package marketnexus.catalog.v1;
+
+message CatalogItemPublished {
+  string event_id = 1;
+  string product_id = 2;
+  string vendor_id = 3;
+  string name = 4;
+  repeated Variant variants = 5;
+  string occurred_at = 6;
+}
+
+message Variant {
+  string sku = 1;
+  int64 price = 2;
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package marketnexus.ordering.v1;
+
+message OrderPlaced {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  repeated OrderLine lines = 4;
+  string occurred_at = 5;
+}
+
+message OrderConfirmed {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  string occurred_at = 4;
+}
+
+message OrderCancelled {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  string reason = 4;
+  string occurred_at = 5;
+}
+
+message OrderLine {
+  string sku = 1;
+  int32 quantity = 2;
+  int64 price = 3;
+}

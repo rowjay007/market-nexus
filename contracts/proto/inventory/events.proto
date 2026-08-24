@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package marketnexus.inventory.v1;
+
+message InventoryReserved {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  string sku = 4;
+  int32 quantity = 5;
+  string occurred_at = 6;
+}
+
+message InventoryReleased {
+  string event_id = 1;
+  string order_id = 2;
+  string vendor_id = 3;
+  string sku = 4;
+  int32 quantity = 5;
+  string occurred_at = 6;
+}

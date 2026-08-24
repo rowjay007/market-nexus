@@ -1,0 +1,2 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])\n\n type Query {\n  order(id: ID!): Order\n }\n\n type Mutation {\n  placeOrder(input: PlaceOrderInput!): Order!\n }\n\n type Order @key(fields: "id") {\n  id: ID!\n  vendorId: ID!\n  status: String!\n  lines: [OrderLine!]!\n }\n\n type OrderLine {\n  sku: ID!\n  quantity: Int!\n  price: Int!\n }\n\n input PlaceOrderInput {\n  id: ID!\n  vendorId: ID!\n  lines: [PlaceOrderLineInput!]!\n }\n\n input PlaceOrderLineInput {\n  sku: ID!\n  quantity: Int!\n }

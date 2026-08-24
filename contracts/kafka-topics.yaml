@@ -1,0 +1,15 @@
+topics:
+  - name: catalog.domain-events.v1
+    owner: catalog-bc
+    key: product_id
+    value_schema: contracts/proto/catalog/events.proto#CatalogItemPublished
+
+  - name: inventory.domain-events.v1
+    owner: inventory-bc
+    key: order_id
+    value_schema: contracts/proto/inventory/events.proto#InventoryReserved|InventoryReleased
+
+  - name: ordering.domain-events.v1
+    owner: ordering-bc
+    key: order_id
+    value_schema: contracts/proto/ordering/events.proto#OrderPlaced|OrderConfirmed|OrderCancelled

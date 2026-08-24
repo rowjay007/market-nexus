@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,
+  vendor_id TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS order_lines (
+  id BIGSERIAL PRIMARY KEY,
+  order_id TEXT NOT NULL REFERENCES orders(id),
+  sku TEXT NOT NULL,
+  quantity INTEGER NOT NULL,
+  price BIGINT NOT NULL
+);

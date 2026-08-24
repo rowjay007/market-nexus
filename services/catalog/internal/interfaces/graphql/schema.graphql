@@ -1,0 +1,2 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key"])\n\n type Query {\n  catalogProducts(vendorId: ID!): [Product!]!\n }\n\n type Product @key(fields: "id") {\n  id: ID!\n  vendorId: ID!\n  name: String!\n  variants: [Variant!]!\n }\n\n type Variant {\n  sku: ID!\n  price: Int!\n }

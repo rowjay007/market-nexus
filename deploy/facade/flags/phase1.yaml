@@ -1,0 +1,7 @@
+routes:
+  - endpoint: /api/catalog
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/inventory
+    rollout: [0, 10, 50, 100]
+  - endpoint: /api/orders
+    rollout: [0, 10, 50, 100]
