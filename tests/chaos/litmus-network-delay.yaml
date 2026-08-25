@@ -1,0 +1,23 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: marketnexus-network-delay
+spec:
+  appinfo:
+    appns: default
+    applabel: app=ordering-service
+    appkind: deployment
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-network-latency
+      spec:
+        components:
+          env:
+            - name: NETWORK_INTERFACE
+              value: eth0
+            - name: NETWORK_LATENCY
+              value: "2000"
+            - name: TOTAL_CHAOS_DURATION
+              value: "120"
+            - name: RAMP_TIME
+              value: "10"

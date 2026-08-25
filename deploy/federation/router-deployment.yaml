@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketnexus-graphql-router
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: marketnexus-graphql-router
+  template:
+    metadata:
+      labels:
+        app: marketnexus-graphql-router
+    spec:
+      containers:
+        - name: router
+          image: ghcr.io/rowjay007/marketnexus-router:latest
+          ports:
+            - containerPort: 4000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: marketnexus-graphql-router
+spec:
+  selector:
+    app: marketnexus-graphql-router
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 4000

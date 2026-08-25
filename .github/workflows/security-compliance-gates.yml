@@ -1,0 +1,42 @@
+name: Security Compliance Gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  kubeconform-and-conftest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Conftest
+        uses: instrumenta/conftest-action@v0.4.0
+
+      - name: Install kubeconform
+        run: |
+          curl -sSL -o kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform.tar.gz
+          sudo mv kubeconform /usr/local/bin/kubeconform
+
+      - name: Validate Kubernetes manifests
+        run: |
+          kubeconform -strict -summary deploy/security/kubernetes/*.yaml deploy/federation/router-deployment.yaml
+
+      - name: Conftest policy check
+        run: |
+          conftest test deploy/security/kubernetes/*.yaml deploy/federation/router-deployment.yaml -p policy
+
+  perf-chaos-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify performance and chaos assets
+        run: |
+          test -f tests/performance/k6-checkout.js
+          test -f tests/performance/k6-search.js
+          test -f tests/chaos/litmus-network-delay.yaml
